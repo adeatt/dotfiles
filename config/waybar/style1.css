@@ -1,0 +1,54 @@
+/*
+    - Waybar styling file
+    -  Created 23.04.25
+
+    Valid dirs:
+    - ~/.config/waybar/
+    - ~/waybar/
+    -/etc/xdg/waybar/
+
+*/
+
+*{
+    border: none;
+    border-radius: 0;
+    font-family: JetBrains Mono Extrabold;
+    font-size: 13px;
+    min-width: 0;
+}
+
+window#waybar {
+    background: rgba(0,0,0, 0.5);
+    border-bottom: 3px solid transparent;
+    color: white;
+}
+
+#workspaces button{
+    padding: 0 5px;
+    background: transparent;
+    color: white;
+    border-bottom: 3px solid transparent;
+}
+
+#workspaces button.focused {
+    background: #64727d;
+    border-bottom: 3px solid white;
+}
+
+#clock, #battery, #network {
+    padding: 0 10px;
+}
+
+#clock {
+    background: #64727d;
+}
+
+#battery {
+    background-color: #ffffff;
+    color: black;
+}
+
+#battery.charging{
+    color: greenyellow;
+    background-color: white;
+}

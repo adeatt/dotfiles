@@ -1,0 +1,146 @@
+/*
+    File from faizan-20 github.
+
+    TODO:
+    - install Hack Nerd Font
+    - this may or may not work idk
+    - big problem here is the color vars
+    - media query expected?
+*/
+
+
+@import './rose-pine.css' ;
+
+
+*{
+  border: none;
+  border-radius: 0;
+  font-family: "Hack Nerd Font";
+  font-weight: 600;
+  font-size: 14px;
+  min-height: 0;
+}
+
+window#waybar {
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--text);
+  /* border-bottom: 1px solid white; */
+  /* border-radius: 0px 0px 8px 8px; */
+}
+
+tooltip {
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid var(--highlightLow);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--text);
+}
+
+#workspaces button {
+  padding: 0px 4px;
+  color: var(--highlightHigh);
+  margin: 2px 2px;
+  border-radius: 4px;
+}
+
+#workspaces button.active {
+  color: var(--base);
+  background-color: var(--foam);
+  border-radius: 4px;
+}
+
+#workspaces button.focused {
+  color: var(--subtle);
+  /* background: @love; */
+  border-radius: 4px;
+}
+
+#workspaces button.urgent {
+  color: var(--base);
+  /* background: @pine; */
+  border-radius: 4px;
+}
+
+#workspaces button:hover {
+  color: var(--iris);
+  background: rgba(255, 255, 255, 0.1); /* Slight hover highlight */
+  border-radius: 4px;
+}
+
+#custom-power_profile,
+#idle_inhibitor,
+#window,
+#clock,
+#battery,
+#pulseaudio,
+#network,
+#bluetooth,
+#temperature,
+#workspaces,
+#tray,
+#memory,
+#custom-powermenu,
+#backlight {
+  opacity: 1;
+  padding: 0px 10px;
+}
+
+#bluetooth {
+  color: var(--text);
+}
+
+#memory {
+  color: var(--pine);
+}
+
+#temperature {
+  color: var(--text);
+}
+
+#temperature.critical {
+  color: var(--love);
+}
+
+#tray {
+}
+
+#custom-power_profile {
+  color: var(--foam);
+}
+
+#window {
+  color: var(--text);
+}
+
+window#waybar.empty #window {
+  background-color: transparent;
+}
+
+#clock {
+  color: var(--rose);
+}
+
+#network {
+  color: var(--love);
+}
+
+#idle_inhibitor {
+}
+
+#pulseaudio {
+  color: var(--iris);
+}
+
+#pulseaudio.microphone {
+  color: var(--text)  ;
+}
+
+#backlight {
+  color: var(--rose);
+  padding: 0px;
+  margin: 0px;
+}
+
+#battery {
+  color: var(--foam);
+}

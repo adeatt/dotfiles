@@ -1,0 +1,67 @@
+/*  - Waybar config file 
+    - Created 23.04.25
+
+    Valid dirs:
+    - ~/.config/waybar/
+    - ~/waybar/
+    - /etc/xdg/waybar/
+*/
+{
+    "layer": "top",
+    "position": "top",
+    "spacing": 0,
+    "height": 34,
+    "modules-left": [
+        "hyprland/workspaces"
+    ],
+    "modules-center":[
+        "clock"
+    ],
+    "modules-right":[
+        "battery","network"
+    ],
+
+    "hyprland/workspaces":{
+        "format": "{icon}",
+        "on-click": "activate",
+        "format-icons": {                   //missing icons, idk how to display them
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "urgent": "󰖪",
+            "active": "󰖪",
+            "default":"󰖪"
+        },
+        "sort-by-number": true
+    },
+    "clock":{
+        "interval": 60,
+        "format":"%H:%M",                //Maybe this wont display a clock if its empty
+        "timezone": "Europe/Berlin"
+    },
+    "battery":{
+        "interval": 120,
+        "states": {
+            "low":30,
+            "warning":15
+        },
+        "format": "{capacity}% {icon}",
+        "format-icons": ["󰖪", "󰖪", "󰖪", "󰖪", "󰖪"],           //missing icons
+        "max-length": 25
+    },
+    "network":{
+        "format-wifi" : "{icon}",
+        "format-icons": ["󰤯","󰤟","󰤢","󰤥","󰤨"],
+        "format-ethernet": "󰀂",
+	    "format-alt" : "󱛇",
+        "format-disconnected" : "󰖪",
+	    "tooltip-format-wifi": "{icon} {essid}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+        "tooltip-format-ethernet": "󰀂  {ifname}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+	    "tooltip-format-disconnected": "Disconnected",
+	    "interval": 5,
+	    "nospacing": 1
+    }
+
+}
