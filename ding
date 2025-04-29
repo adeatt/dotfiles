@@ -1,0 +1,101 @@
+/**
+ * Programmname : Programm fuer Veraenderung Frequenz einer blinkenden Lampe auf Knopfdruck
+ * Autor : Theresa Engelhardt, Benedikt Gabler, Simon Wagner
+ * Datum : 28.04.25
+ */
+
+//genutze Libraries
+#include <stm32f3xx.h>
+#include <system_stm32f3xx.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+
+//Adressen Register - siehe Seite 54 des Handbuchs
+// Definieren und Setzen des Zeigers
+volatile uint32_t *ptrRCC_AHBENR = (uint32_t*) 0x40021014;
+//LED
+volatile uint32_t *ptrGPIOA_MODER5 = (uint32_t*) 0x48000000;
+volatile uint32_t *ptrGPIOA_ODR = (uint32_t*) 0x48000014;
+//Taster
+volatile uint32_t *ptrGPIOC_MODER13 = (uint32_t*) 0x48000800;
+volatile uint32_t *ptrGPIOC_IDR = (uint32_t*) 0x48000810;
+volatile uint32_t *ptrGPIOC_PUPDR = (uint32_t*) 0x4800000C;
+//Nummern der Pins (kein fester Datentyp)
+#define pinLED (5)
+#define pinTaster (13)
+
+
+//main Methode
+int main ( void )
+{
+    uint32_t i = 1;
+    // Methodenaufruf Initialisierung
+    init();
+    // Kopfgesteuerte (Endlos)schleife, da immer True
+    while (1)
+    {
+        // Modulo 3, da insgesamt 3 mÃ¶gl. Werte (Rest 0,1,2)
+        modi(i%3);
+        // Holen des Wertes aus input data register, Verunden/ Eliminieren bis auf 14. Stelle
+        // ueberpruefung auf ist nicht, da bei Stelle 14 auf 1, der Knopf nicht gedrueckt ist (
+        if ((*ptrGPIOC_IDR & 0x00002000) != 0x00002000){
+            i++;
+        }
+        //ZurÃ¼cksetzen des Modulo auf 1 fÃ¼r neuen zyklus
+        if(i >= 4){
+            i = 1;
+        }
+        delay(10000);
+    }
+}
+
+void modi(uint32_t uebergabe){
+    if(uebergabe == 1){
+        *ptrGPIOA_ODR |= (1 << pinLED); // An
+        delay(150000);
+        *ptrGPIOA_ODR ^= (1 << pinLED); // Aus
+        delay(150000);
+    }
+    else if(uebergabe == 2){
+        *ptrGPIOA_ODR |= (1 << pinLED);
+        delay(100000);
+        *ptrGPIOA_ODR ^= (1 << pinLED);
+        delay(100000);
+    }
+    else{
+        *ptrGPIOA_ODR |= (1 << pinLED);
+        delay(50000);
+        *ptrGPIOA_ODR ^= (1 << pinLED);
+        delay(50000);
+    }
+}
+
+// Methode Ã¼bergabeabhÃ¤ngige VerzÃ¶gerung
+void delay(uint32_t uebergabe){
+    volatile uint32_t i = 0;
+    while(i < uebergabe){
+        i++;
+    }
+}
+
+//Methode zum Anschalten der Taktversorgung
+void init( void )
+{
+
+    // clock control fuer Register Enable an 17. & 19. Stelle  --> A & C (LED & Taster) (Ueber Bitshift)
+    *ptrRCC_AHBENR |= (1<<17);
+    *ptrRCC_AHBENR |= (1<<19);
+
+    //pull up register fuer Taster zuschalten
+    *ptrGPIOC_PUPDR &= ~(0b11 << 26);
+    *ptrGPIOC_PUPDR |= (0b01 << 26);
+
+    //Zuweisung PA5 als output/ Register Pinmodus fÃ¼r Bus A
+    *ptrGPIOA_MODER5 &= ~(0b11 << (pinLED * 2));
+    *ptrGPIOA_MODER5 |= (0b01 << (pinLED * 2));
+
+    //Zuweisung PC13 als input/ Register pinmodus fÃ¼r Bus C
+    *ptrGPIOC_MODER13 &= ~(0b11 << (pinTaster * 2));
+    *ptrGPIOC_MODER13 |= (0b00 << (pinTaster * 2));
+}
